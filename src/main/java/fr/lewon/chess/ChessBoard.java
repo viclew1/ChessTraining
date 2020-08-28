@@ -3,7 +3,7 @@ package fr.lewon.chess;
 import fr.lewon.chess.pieces.ChessPiece;
 import fr.lewon.chess.pieces.PieceType;
 import fr.lewon.chess.pieces.impl.Bishop;
-import fr.lewon.chess.pieces.impl.Horseman;
+import fr.lewon.chess.pieces.impl.Knight;
 import fr.lewon.chess.pieces.impl.King;
 import fr.lewon.chess.pieces.impl.Pawn;
 import fr.lewon.chess.pieces.impl.Queen;
@@ -38,10 +38,10 @@ public class ChessBoard {
 		tiles[7][0].setPiece(new Rook(true));
 		tiles[7][7].setPiece(new Rook(true));
 
-		tiles[0][1].setPiece(new Horseman(false));
-		tiles[0][6].setPiece(new Horseman(false));
-		tiles[7][1].setPiece(new Horseman(true));
-		tiles[7][6].setPiece(new Horseman(true));
+		tiles[0][1].setPiece(new Knight(false));
+		tiles[0][6].setPiece(new Knight(false));
+		tiles[7][1].setPiece(new Knight(true));
+		tiles[7][6].setPiece(new Knight(true));
 
 		tiles[0][2].setPiece(new Bishop(false));
 		tiles[0][5].setPiece(new Bishop(false));

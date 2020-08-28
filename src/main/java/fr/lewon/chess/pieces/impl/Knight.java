@@ -7,10 +7,10 @@ import fr.lewon.chess.moves.Move;
 import fr.lewon.chess.pieces.ChessPiece;
 import fr.lewon.chess.pieces.PieceType;
 
-public class Horseman extends ChessPiece {
+public class Knight extends ChessPiece {
 
-	public Horseman(boolean isWhite) {
-		super(PieceType.HORSEMAN, isWhite);
+	public Knight(boolean isWhite) {
+		super(PieceType.KNIGHT, isWhite);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class Horseman extends ChessPiece {
 	
 	@Override
 	public ChessPiece copy() {
-		return new Horseman(isWhite());
+		return new Knight(isWhite());
 	}
 
 }

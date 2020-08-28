@@ -1,13 +1,12 @@
 package fr.lewon.gui;
 
 import java.awt.Color;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,12 +54,14 @@ public class ChessPane extends JPanel implements MouseListener, MouseMotionListe
 				}
 				g.fillRect(x, y, sizeCell, sizeCell);
 				if (tile.getPiece() != null) {
-					g.setColor(tile.getPiece().isWhite() ? Color.WHITE : Color.DARK_GRAY);
-					g.fillRect(x + sizeCell / 5, y + sizeCell / 5, sizeCell * 3 / 5, sizeCell * 3 / 5);
-					g.setColor(Color.BLACK);
-					g.drawRect(x + sizeCell / 5, y + sizeCell / 5, sizeCell * 3 / 5, sizeCell * 3 / 5);
-					g.setColor(tile.getPiece().isWhite() ? Color.BLACK : Color.WHITE);
-					drawTextCenterRect(g, x, y, sizeCell, sizeCell, tile.getPiece().draw());
+					String resourceName = tile.getPiece().isWhite() ? "W" : "B";
+					resourceName += "_" + tile.getPiece().getType().name().toLowerCase() + ".png";
+					try {
+						BufferedImage img = ChessImages.INSTANCE.loadImage(resourceName);
+						g.drawImage(img, x, y, sizeCell, sizeCell, null);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 				g.setColor(Color.BLACK);
 				g.drawRect(x, y, sizeCell, sizeCell);
@@ -73,15 +74,6 @@ public class ChessPane extends JPanel implements MouseListener, MouseMotionListe
 		hoveredTile = null;
 		selectedTile = null;
 		possibleMoves = new ArrayList<>();
-	}
-	
-	private void drawTextCenterRect(Graphics g, int x, int y, int w, int h, String text) {
-		Graphics2D g2d = (Graphics2D) g;
-        FontMetrics fm = g2d.getFontMetrics();
-        Rectangle2D r = fm.getStringBounds(text, g2d);
-        int xTxt = (x + w / 2 - (int) r.getWidth() / 2);
-        int yTxt = (y + h / 2 - (int) r.getHeight() / 2) + fm.getAscent();
-        g.drawString(text, xTxt, yTxt);
 	}
 	
 	private ChessTile getTileAtLoc(int x, int y) {
