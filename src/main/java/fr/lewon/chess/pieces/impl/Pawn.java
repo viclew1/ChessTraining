@@ -1,6 +1,6 @@
 package fr.lewon.chess.pieces.impl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import fr.lewon.chess.moves.Move;
 import fr.lewon.chess.pieces.ChessPiece;
@@ -14,11 +14,8 @@ public class Pawn extends ChessPiece {
 
 	@Override
 	public List<Move> getPossibleMoves() {
-		return Arrays.asList(
-				new Move(isWhite() ? -1 : 1, 0, false, false, true),
-				new Move(isWhite() ? -2 : 2, 0, false, false, true, (b, r, c) -> !isAlreadyMoved()),
-				new Move(isWhite() ? -1 : 1, 1, false, true, false),
-				new Move(isWhite() ? -1 : 1, -1, false, true, false));
+		//TODO implémenter
+		return new ArrayList<>();
 	}
 	
 	@Override

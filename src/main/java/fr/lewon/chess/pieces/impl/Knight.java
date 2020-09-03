@@ -1,6 +1,6 @@
 package fr.lewon.chess.pieces.impl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.lewon.chess.moves.Move;
@@ -15,15 +15,8 @@ public class Knight extends ChessPiece {
 
 	@Override
 	public List<Move> getPossibleMoves() {
-		return Arrays.asList(
-				new Move(2, 1, false, true, true),  
-				new Move(2, -1, false, true, true), 
-				new Move(-2, 1, false, true, true), 
-				new Move(-2, -1, false, true, true),
-				new Move(1, 2, false, true, true),  
-				new Move(1, -2, false, true, true), 
-				new Move(-1, 2, false, true, true),
-				new Move(-1, -2, false, true, true));
+		//TODO implémenter
+		return new ArrayList<>();
 	}
 	
 	@Override
