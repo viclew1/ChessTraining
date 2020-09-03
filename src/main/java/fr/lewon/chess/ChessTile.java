@@ -13,10 +13,6 @@ public class ChessTile {
 		this.col = col;
 	}
 
-	public String draw() {
-		return piece == null ? " " : piece.draw();
-	}
-
 	public ChessPiece getPiece() {
 		return piece;
 	}

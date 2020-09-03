@@ -58,7 +58,12 @@ public class ChessBoard {
 			tiles[6][i].setPiece(new Pawn(true));			
 		}
 	}
-
+	
+	/**
+	 * Vérifie si la couleur passée en paramètre est en echec, retourne true si c'est le cas, false sinon
+	 * @param isWhite
+	 * @return
+	 */
 	public boolean isCheck(boolean isWhite) {
 		for (int row = 0 ; row < 8 ; row ++) {
 			for (int col = 0 ; col < 8 ; col ++) {
@@ -76,21 +81,24 @@ public class ChessBoard {
 		return false;
 	}
 
-	public String drawString() {
-		StringBuilder sb = new StringBuilder();
-		for (ChessTile[] line: tiles) {
-			for (ChessTile tile : line) {
-				sb.append(tile.draw() + "|");
-			}
-			sb.append("\n");
-		}
-		return sb.toString();
-	}
-
+	/**
+	 * Voir {@link #play(ChessTile, ChessTile)}
+	 * @param fromRow
+	 * @param fromCol
+	 * @param toRow
+	 * @param toCol
+	 * @return
+	 */
 	public boolean play(int fromRow, int fromCol, int toRow, int toCol) {
 		return play(tiles[fromRow][fromCol], tiles[toRow][toCol]);
 	}
 
+	/**
+	 * Déplace la pièce située sur la case 'from' vers la case 'to'. Retourne true si le déplacement s'est bien passé, false sinon
+	 * @param from
+	 * @param to
+	 * @return
+	 */
 	public boolean play(ChessTile from, ChessTile to) {
 		ChessPiece piece = from.getPiece();
 		if (piece == null) {
@@ -106,10 +114,24 @@ public class ChessBoard {
 		return true;
 	}
 	
+	/**
+	 * Voir {@link #simulatePlay(ChessTile, ChessTile)}
+	 * @param fromRow
+	 * @param fromCol
+	 * @param toRow
+	 * @param toCol
+	 * @return
+	 */
 	public ChessBoard simulatePlay(int fromRow, int fromCol, int toRow, int toCol) {
 		return simulatePlay(tiles[fromRow][fromCol], tiles[toRow][toCol]);
 	}
 	
+	/**
+	 * Simule un coup sur un nouveau ChessBoard, puis rend ce chessboard
+	 * @param from
+	 * @param to
+	 * @return
+	 */
 	public ChessBoard simulatePlay(ChessTile from, ChessTile to) {
 		ChessBoard board = new ChessBoard(this);
 		ChessTile newFrom = board.getTile(from.getRow(), from.getCol());
@@ -120,15 +142,29 @@ public class ChessBoard {
 		return board;
 	}
 
-
+	/**
+	 * Retourne la case présente à la ligne 'row' et à la colonne 'col'
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	public ChessTile getTile(int row, int col) {
 		return tiles[row][col];
 	}
 
+	/**
+	 * Retourne true si c'est aux blancs de jouer, false sinon
+	 * @return
+	 */
 	public boolean isWhiteTurn() {
 		return isWhiteTurn;
 	}
 
+	/**
+	 * Retourne la {@link ChessTile} sur laquelle se trouve le roi de la couleur passée en paramètre
+	 * @param isWhite
+	 * @return
+	 */
 	public ChessTile getKingTile(boolean isWhite) {
 		for (int row = 0 ; row < 8 ; row++) {
 			for (int col = 0 ; col < 8 ; col++) {

@@ -14,11 +14,6 @@ public class King extends ChessPiece {
 	}
 
 	@Override
-	public String draw() {
-		return "K";
-	}
-
-	@Override
 	public List<Move> getPossibleMoves() {
 		return Arrays.asList(
 				new Move(1, -1, false, true, true),

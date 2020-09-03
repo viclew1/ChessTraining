@@ -13,11 +13,6 @@ public class Pawn extends ChessPiece {
 	}
 
 	@Override
-	public String draw() {
-		return "P";
-	}
-
-	@Override
 	public List<Move> getPossibleMoves() {
 		return Arrays.asList(
 				new Move(isWhite() ? -1 : 1, 0, false, false, true),

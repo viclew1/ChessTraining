@@ -14,11 +14,6 @@ public class Rook extends ChessPiece {
 	}
 
 	@Override
-	public String draw() {
-		return "R";
-	}
-	
-	@Override
 	public List<Move> getPossibleMoves() {
 		return Arrays.asList(
 				new Move(0, -1, true, true, true),

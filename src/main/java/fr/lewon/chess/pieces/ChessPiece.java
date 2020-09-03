@@ -25,10 +25,6 @@ public abstract class ChessPiece {
 		return type;
 	}
 
-
-	public abstract String draw();
-
-
 	public boolean isWhite() {
 		return isWhite;
 	}
@@ -42,10 +38,24 @@ public abstract class ChessPiece {
 		this.alreadyMoved = alreadyMoved;
 	}
 	
+	/**
+	 * Voir {@link #getAccessibleTiles(ChessBoard, int, int)}
+	 * @param board
+	 * @param tile
+	 * @return
+	 */
 	public List<ChessTile> getAccessibleTiles(ChessBoard board, ChessTile tile) {
 		return getAccessibleTiles(board, tile.getRow(), tile.getCol());
 	}
 	
+	/**
+	 * Retourne les cases accessibles par la pièce située sur la case identifiable à partir des lignes et colonnes en paramètres
+	 * 
+	 * @param board
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	public List<ChessTile> getAccessibleTiles(ChessBoard board, int row, int col) {
 		return getAccessibleTiles(board, row, col, true);
 	}
@@ -82,6 +92,10 @@ public abstract class ChessPiece {
 		return !board.simulatePlay(fromRow, fromCol, toRow, toCol).isCheck(isWhite);
 	}
 
+	/**
+	 * Retourne les {@link Move} réalisables pour la pièce en question
+	 * @return
+	 */
 	protected abstract List<Move> getPossibleMoves();
 
 

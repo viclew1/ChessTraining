@@ -14,11 +14,6 @@ public class Bishop extends ChessPiece {
 	}
 
 	@Override
-	public String draw() {
-		return "B";
-	}
-
-	@Override
 	protected List<Move> getPossibleMoves() {
 		return Arrays.asList(
 				new Move(1, 1, true, true, true),

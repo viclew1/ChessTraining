@@ -1,5 +1,8 @@
 package fr.lewon.chess.moves;
 
+/**
+ *	Décrit un déplacement posible pour une pièce
+ */
 public class Move {
 
 	private int dRow;

@@ -14,11 +14,6 @@ public class Queen extends ChessPiece {
 	}
 
 	@Override
-	public String draw() {
-		return "Q";
-	}
-
-	@Override
 	public List<Move> getPossibleMoves() {
 		return Arrays.asList(
 				new Move(1, -1, true, true, true),
