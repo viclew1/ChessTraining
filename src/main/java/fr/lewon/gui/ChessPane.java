@@ -1,74 +1,88 @@
 package fr.lewon.gui;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JPanel;
 
 import fr.lewon.chess.ChessBoard;
 import fr.lewon.chess.ChessTile;
 import fr.lewon.chess.pieces.PieceType;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 
-public class ChessPane extends JPanel implements MouseListener, MouseMotionListener {
-	
-	private static final long serialVersionUID = 3139012877415286207L;
-	
+public class ChessPane extends GridPane {
+
 	private ChessBoard chessBoard;
 	private ChessTile hoveredTile;
 	private ChessTile selectedTile;
+	private ChessTile lastMoveFrom;
+	private ChessTile lastMoveTo;
+	private Rectangle[][] colorSquares = new Rectangle[8][8];
+	private Rectangle[][] pieceSquares = new Rectangle[8][8];
 	private List<ChessTile> possibleMoves = new ArrayList<>();
 
 	public ChessPane() {
 		resetGame();
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
-	}
+		for (int r = 0; r < 8; r++) {
+			for (int c = 0; c < 8; c++) {
+				final int row = r;
+				final int col = c;
+				StackPane stack = new StackPane();
+				stack.setBackground(new Background(new BackgroundFill(((row + col) % 2 == 0) ? Color.BURLYWOOD.darker() : Color.BURLYWOOD, CornerRadii.EMPTY, Insets.EMPTY)));
+				stack.setStyle("-fx-border-color:black;"	);
+				Rectangle pieceSquare = new Rectangle();
+				Rectangle colorSquare = new Rectangle();
+				
+				colorSquares[row][col] = colorSquare;
+				pieceSquares[row][col] = pieceSquare;
+				
+				colorSquare.setOpacity(0.8d);
+				stack.getChildren().add(colorSquare);
+				stack.getChildren().add(pieceSquare);
 
-	@Override
-	public void paint(Graphics g) {
-		super.getRootPane().updateUI();
-		int sizeCell = Math.min(getSize().width, getSize().height) / 8;
-		for (int i = 0 ; i < 8 ; i++) {
-			for (int j = 0 ; j < 8 ; j++) {
-				ChessTile tile = chessBoard.getTile(i, j);
-				int x = j * sizeCell;
-				int y = i * sizeCell;
-				int cellCount = i % 2 + j;
-				if (tile.getPiece() != null && tile.getPiece().getType() == PieceType.KING && chessBoard.isCheck(tile.getPiece().isWhite())) {
-					g.setColor(Color.RED);
-				} else if (tile == selectedTile) {
-					g.setColor(Color.BLUE);
-				} else if (tile == hoveredTile) {
-					g.setColor(Color.CYAN);
-				} else if (possibleMoves.contains(tile)) {
-					g.setColor(Color.GREEN);
-				} else {
-					g.setColor(cellCount % 2 == 0 ? Color.LIGHT_GRAY : Color.GRAY);	
-				}
-				g.fillRect(x, y, sizeCell, sizeCell);
+				colorSquare.setFill(Color.TRANSPARENT);
+				pieceSquare.setFill(Color.TRANSPARENT);
+				
+				stack.addEventFilter(MouseEvent.MOUSE_MOVED, (e) -> {
+					mouseMoved(row, col);
+					updateBoard();
+				});
+				stack.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+					mouseClicked(row, col);
+					updateBoard();
+				});
+
+				ChessTile tile = chessBoard.getTile(row, col);
 				if (tile.getPiece() != null) {
 					String resourceName = tile.getPiece().isWhite() ? "W" : "B";
 					resourceName += "_" + tile.getPiece().getType().name().toLowerCase() + ".png";
-					try {
-						BufferedImage img = ChessImages.INSTANCE.loadImage(resourceName);
-						g.drawImage(img, x, y, sizeCell, sizeCell, null);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					pieceSquare.setFill(new ImagePattern(new Image("/" + resourceName)));
 				}
-				g.setColor(Color.BLACK);
-				g.drawRect(x, y, sizeCell, sizeCell);
+				
+				add(stack, col, row);
+				pieceSquare.widthProperty().bind(widthProperty().divide(8).subtract(2));
+				pieceSquare.heightProperty().bind(heightProperty().divide(8).subtract(3));
+				colorSquare.widthProperty().bind(widthProperty().divide(8).subtract(2));
+				colorSquare.heightProperty().bind(heightProperty().divide(8).subtract(3));
 			}
 		}
 	}
-	
+
+	public void updateBoard() {
+		
+	}
+
 	public void resetGame() {
 		this.chessBoard = new ChessBoard();
 		hoveredTile = null;
@@ -76,30 +90,41 @@ public class ChessPane extends JPanel implements MouseListener, MouseMotionListe
 		possibleMoves = new ArrayList<>();
 	}
 	
-	private ChessTile getTileAtLoc(int x, int y) {
-		int sizeCell = Math.min(getSize().width, getSize().height) / 8;
-		if (x < sizeCell * 8 && y < sizeCell * 8) {
-			int row = y / sizeCell;
-			int col = x / sizeCell;
-			return chessBoard.getTile(row, col);
+	private void resetColor(int row, int col) {
+		ChessTile tile = chessBoard.getTile(row, col);
+		Rectangle colorSquare = colorSquares[row][col];
+		Color color;
+		if (selectedTile == tile) {
+			color = Color.BLUE;
+		} else if (hoveredTile == tile) {
+			color = Color.CYAN;
+		} else if (tile.getPiece() != null && tile.getPiece().getType() == PieceType.KING && chessBoard.isCheck(tile.getPiece().isWhite())) {
+			color = Color.RED;
+		} else if (possibleMoves.contains(tile)) {
+			color = Color.GREEN;
+		} else if (lastMoveFrom == tile) {
+			color = Color.GREY;
+		} else if (lastMoveTo == tile) {
+			color = Color.DARKGREY;
+		} else {
+			color = Color.TRANSPARENT;
 		}
-		return null;
+		colorSquare.setFill(color);
 	}
 
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void mouseMoved(int row, int col) {
+		ChessTile oldHoveredTile = hoveredTile;
+		hoveredTile = chessBoard.getTile(row, col);
+		if (oldHoveredTile != null) {
+			resetColor(oldHoveredTile.getRow(), oldHoveredTile.getCol());
+		}
+		if (hoveredTile != null && hoveredTile != selectedTile) {
+			resetColor(row, col);
+		}
 	}
 
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		hoveredTile = getTileAtLoc(e.getX(), e.getY());
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		ChessTile tile = getTileAtLoc(e.getX(), e.getY());
+	public void mouseClicked(int row, int col) {
+		ChessTile tile = chessBoard.getTile(row, col);
 		if (possibleMoves.contains(tile)) {
 			playMove(selectedTile, tile);
 		} else {
@@ -109,42 +134,52 @@ public class ChessPane extends JPanel implements MouseListener, MouseMotionListe
 
 	private void playMove(ChessTile from, ChessTile to) {
 		selectedTile = null;
-		possibleMoves.clear();
-		chessBoard.play(from, to);
-	}
-
-	private void selectNewTile(ChessTile previouslySelectedTile, ChessTile clickedTile) {
-		selectedTile = null;
-		possibleMoves.clear();
-		if (clickedTile.getPiece() != null) {
-			selectedTile = clickedTile;
-			possibleMoves.addAll(selectedTile.getPiece().getAccessibleTiles(chessBoard, clickedTile));
+		if (chessBoard.play(from, to)) {
+			ChessTile oldLastMoveFrom = lastMoveFrom;
+			ChessTile oldLastMoveTo = lastMoveTo;
+			lastMoveFrom = from;
+			lastMoveTo = to;
+			if (oldLastMoveFrom != null) {
+				resetColor(oldLastMoveFrom.getRow(), oldLastMoveFrom.getCol());
+			}
+			if (oldLastMoveTo != null) {
+				resetColor(oldLastMoveTo.getRow(), oldLastMoveTo.getCol());				
+			}
+			resetColor(lastMoveFrom.getRow(), lastMoveFrom.getCol());
+			resetColor(lastMoveTo.getRow(), lastMoveTo.getCol());
+			Rectangle fromPieceSquare = pieceSquares[from.getRow()][from.getCol()];
+			Rectangle toPieceSquare = pieceSquares[to.getRow()][to.getCol()];
+			toPieceSquare.setFill(fromPieceSquare.getFill());
+			fromPieceSquare.setFill(Color.TRANSPARENT);
+			updatePossibleMoves(new ArrayList<>());
+			ChessTile kingTile = chessBoard.getKingTile(chessBoard.isWhiteTurn());
+			resetColor(kingTile.getRow(), kingTile.getCol());
 		}
 	}
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	private void selectNewTile(ChessTile previouslySelectedTile, ChessTile clickedTile) {
+		ChessTile oldSelectedTile = selectedTile;
+		selectedTile = null;
+		if (oldSelectedTile != null) {
+			resetColor(oldSelectedTile.getRow(), oldSelectedTile.getCol());
+		}
+		if (clickedTile != null && clickedTile.getPiece() != null) {
+			selectedTile = clickedTile;
+			updatePossibleMoves(selectedTile.getPiece().getAccessibleTiles(chessBoard, clickedTile));
+		} else {
+			updatePossibleMoves(new ArrayList<>());
+		}
 	}
 	
-
+	private void updatePossibleMoves(List<ChessTile> newPossibleMoves) {
+		List<ChessTile> oldPossibleMoves = possibleMoves;
+		possibleMoves = newPossibleMoves;
+		for (ChessTile move : oldPossibleMoves) {
+			resetColor(move.getRow(), move.getCol());
+		}
+		for (ChessTile move : possibleMoves) {
+			resetColor(move.getRow(), move.getCol());
+		}
+	}
+	
 }

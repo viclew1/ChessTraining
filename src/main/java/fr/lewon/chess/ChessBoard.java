@@ -12,6 +12,8 @@ import fr.lewon.chess.pieces.impl.Rook;
 public class ChessBoard {
 
 	private ChessTile[][] tiles;
+	private ChessTile whiteKingTile;
+	private ChessTile blackKingTile;
 
 	private boolean isWhiteTurn = true;
 
@@ -123,6 +125,22 @@ public class ChessBoard {
 
 	public ChessTile getTile(int row, int col) {
 		return tiles[row][col];
+	}
+
+	public boolean isWhiteTurn() {
+		return isWhiteTurn;
+	}
+
+	public ChessTile getKingTile(boolean isWhite) {
+		for (int row = 0 ; row < 8 ; row++) {
+			for (int col = 0 ; col < 8 ; col++) {
+				ChessTile tile = getTile(row, col);
+				if (tile.getPiece() != null && tile.getPiece().getType() == PieceType.KING && tile.getPiece().isWhite() == isWhite) {
+					return tile;
+				}
+			}
+		}
+		return null;
 	}
 
 }
