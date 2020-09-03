@@ -12,8 +12,6 @@ import fr.lewon.chess.pieces.impl.Rook;
 public class ChessBoard {
 
 	private ChessTile[][] tiles;
-	private ChessTile whiteKingTile;
-	private ChessTile blackKingTile;
 
 	private boolean isWhiteTurn = true;
 

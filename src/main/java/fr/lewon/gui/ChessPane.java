@@ -6,16 +6,13 @@ import java.util.List;
 import fr.lewon.chess.ChessBoard;
 import fr.lewon.chess.ChessTile;
 import fr.lewon.chess.pieces.PieceType;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -56,11 +53,9 @@ public class ChessPane extends GridPane {
 				
 				stack.addEventFilter(MouseEvent.MOUSE_MOVED, (e) -> {
 					mouseMoved(row, col);
-					updateBoard();
 				});
 				stack.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
 					mouseClicked(row, col);
-					updateBoard();
 				});
 
 				ChessTile tile = chessBoard.getTile(row, col);
@@ -77,10 +72,6 @@ public class ChessPane extends GridPane {
 				colorSquare.heightProperty().bind(heightProperty().divide(8).subtract(3));
 			}
 		}
-	}
-
-	public void updateBoard() {
-		
 	}
 
 	public void resetGame() {
