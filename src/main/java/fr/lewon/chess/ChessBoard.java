@@ -1,5 +1,7 @@
 package fr.lewon.chess;
 
+import fr.lewon.chess.pieces.PieceType;
+
 public class ChessBoard {
 
 	private ChessTile[][] tiles;
@@ -100,7 +102,14 @@ public class ChessBoard {
 	 * @return
 	 */
 	public ChessTile getKingTile(boolean isWhite) {
-		//TODO implémenter
+		for (int row = 0 ; row < 8 ; row++) {
+			for (int col = 0 ; col < 8 ; col++) {
+				ChessTile tile = getTile(row, col);
+				if (tile.getPiece() != null && tile.getPiece().getType() == PieceType.KING && tile.getPiece().isWhite() == isWhite) {
+					return tile;
+				}
+			}
+		}
 		return null;
 	}
 
