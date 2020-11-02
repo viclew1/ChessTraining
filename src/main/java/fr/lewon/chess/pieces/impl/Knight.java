@@ -15,8 +15,12 @@ public class Knight extends ChessPiece {
 
 	@Override
 	public List<Move> getPossibleMoves() {
-		//TODO implémenter
-		return new ArrayList<>();
+
+		List<Move> moves = new ArrayList<>(); 
+		moves.add(new Move(1, 1, false, true, true));
+		moves.add(new Move(1, -1, false, true, true));
+
+		return moves;
 	}
 	
 	@Override

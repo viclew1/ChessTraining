@@ -1,6 +1,13 @@
 package fr.lewon.chess;
 
+import fr.lewon.chess.pieces.ChessPiece;
 import fr.lewon.chess.pieces.PieceType;
+import fr.lewon.chess.pieces.impl.Bishop;
+import fr.lewon.chess.pieces.impl.King;
+import fr.lewon.chess.pieces.impl.Knight;
+import fr.lewon.chess.pieces.impl.Pawn;
+import fr.lewon.chess.pieces.impl.Queen;
+import fr.lewon.chess.pieces.impl.Rook;
 
 public class ChessBoard {
 
@@ -19,7 +26,45 @@ public class ChessBoard {
 				this.tiles[r][c] = new ChessTile(r, c);
 			}
 		}
-		//TODO implémenter
+		this.tiles[0][0].setPiece(new Rook(true));
+		this.tiles[0][1].setPiece(new Knight(true));
+		this.tiles[0][2].setPiece(new Bishop(true));
+		this.tiles[0][3].setPiece(new Queen(true));
+		this.tiles[0][4].setPiece(new King(true));
+		this.tiles[0][5].setPiece(new Bishop(true));
+		this.tiles[0][6].setPiece(new Knight(true));
+		this.tiles[0][7].setPiece(new Rook(true));
+
+		this.tiles[7][0].setPiece(new Rook(false));
+		this.tiles[7][1].setPiece(new Knight(false));
+		this.tiles[7][2].setPiece(new Bishop(false));
+		this.tiles[7][3].setPiece(new Queen(false));
+		this.tiles[7][4].setPiece(new King(false));
+		this.tiles[7][5].setPiece(new Bishop(false));
+		this.tiles[7][6].setPiece(new Knight(false));
+		this.tiles[7][7].setPiece(new Rook(false));
+		
+//		
+//		this.tiles[1][0].setPiece(new Pawn(true));
+//		this.tiles[1][1].setPiece(new Pawn(true));
+//		this.tiles[1][2].setPiece(new Pawn(true));
+//		this.tiles[1][3].setPiece(new Pawn(true));
+//		this.tiles[1][4].setPiece(new Pawn(true));
+//		this.tiles[1][5].setPiece(new Pawn(true));
+//		this.tiles[1][6].setPiece(new Pawn(true));
+//		this.tiles[1][7].setPiece(new Pawn(true));
+//
+//
+//		this.tiles[6][0].setPiece(new Pawn(false));
+//		this.tiles[6][1].setPiece(new Pawn(false));
+//		this.tiles[6][2].setPiece(new Pawn(false));
+//		this.tiles[6][3].setPiece(new Pawn(false));
+//		this.tiles[6][4].setPiece(new Pawn(false));
+//		this.tiles[6][5].setPiece(new Pawn(false));
+//		this.tiles[6][6].setPiece(new Pawn(false));
+//		this.tiles[6][7].setPiece(new Pawn(false));
+
+		
 	}
 	
 	/**
@@ -51,8 +96,12 @@ public class ChessBoard {
 	 * @return
 	 */
 	public boolean play(ChessTile from, ChessTile to) {
-		//TODO implémenter
-		return false;
+		 
+		ChessPiece movedPiece = from.getPiece();
+		from.setPiece(null);
+		to.setPiece(movedPiece);
+		
+		return true;
 	}
 	
 	/**

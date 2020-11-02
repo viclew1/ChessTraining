@@ -56,8 +56,31 @@ public abstract class ChessPiece {
 	 * @return
 	 */
 	public List<ChessTile> getAccessibleTiles(ChessBoard board, int row, int col) {
-		//TODO implémenter
-		return new ArrayList<>();
+		List<ChessTile> accessibleTiles = new ArrayList<>();
+		List<Move> possibleMoves = getPossibleMoves();		
+		
+		for (Move m : possibleMoves) {
+			
+			int newRow = row+m.getdRow();
+			int newCol = col+m.getdCol();
+			
+			if (newRow >= 0 && newRow <8 && newCol >= 0 && newCol <8 ) {
+				
+				ChessPiece chessPiece =  board.getTile(newRow, newCol).getPiece();
+				
+				
+				
+				if (chessPiece == null || chessPiece.isWhite!=this.isWhite) {
+					
+					accessibleTiles.add(board.getTile(newRow, newCol));
+					
+				}
+						
+			}
+	
+		}
+		
+		return accessibleTiles;
 	}
 
 	/**
