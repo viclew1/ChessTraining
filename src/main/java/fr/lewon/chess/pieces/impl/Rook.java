@@ -15,8 +15,14 @@ public class Rook extends ChessPiece {
 
 	@Override
 	public List<Move> getPossibleMoves() {
-		//TODO implémenter
-		return new ArrayList<>();
+		
+		List<Move> moves = new ArrayList<>(); 
+		moves.add(new Move(0, -1, true, true, true)); //une case à gauche
+		moves.add(new Move(0, 1, true, true, true)); //une case à droite
+		moves.add(new Move(1, 0, true, true, true)); //descend d'une case
+		moves.add(new Move(-1, 0, true, true, true)); //monte d'une case
+		
+		return moves;
 	}
 	
 	@Override

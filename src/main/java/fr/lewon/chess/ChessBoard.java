@@ -44,25 +44,13 @@ public class ChessBoard {
 		this.tiles[7][6].setPiece(new Knight(false));
 		this.tiles[7][7].setPiece(new Rook(false));
 		
-//		
-//		this.tiles[1][0].setPiece(new Pawn(true));
-//		this.tiles[1][1].setPiece(new Pawn(true));
-//		this.tiles[1][2].setPiece(new Pawn(true));
-//		this.tiles[1][3].setPiece(new Pawn(true));
-//		this.tiles[1][4].setPiece(new Pawn(true));
-//		this.tiles[1][5].setPiece(new Pawn(true));
-//		this.tiles[1][6].setPiece(new Pawn(true));
-//		this.tiles[1][7].setPiece(new Pawn(true));
-//
-//
-//		this.tiles[6][0].setPiece(new Pawn(false));
-//		this.tiles[6][1].setPiece(new Pawn(false));
-//		this.tiles[6][2].setPiece(new Pawn(false));
-//		this.tiles[6][3].setPiece(new Pawn(false));
-//		this.tiles[6][4].setPiece(new Pawn(false));
-//		this.tiles[6][5].setPiece(new Pawn(false));
-//		this.tiles[6][6].setPiece(new Pawn(false));
-//		this.tiles[6][7].setPiece(new Pawn(false));
+		for (int i = 0; i<8; i++) {
+			
+			this.tiles[1][i].setPiece(new Pawn(true));
+			this.tiles[6][i].setPiece(new Pawn(false));
+			
+		}
+
 
 		
 	}
@@ -100,6 +88,7 @@ public class ChessBoard {
 		ChessPiece movedPiece = from.getPiece();
 		from.setPiece(null);
 		to.setPiece(movedPiece);
+		movedPiece.setAlreadyMoved(true);
 		
 		return true;
 	}

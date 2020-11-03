@@ -15,8 +15,14 @@ public class Bishop extends ChessPiece {
 
 	@Override
 	protected List<Move> getPossibleMoves() {
-		//TODO implémenter
-		return new ArrayList<>();
+
+		List<Move> moves = new ArrayList<>();
+		moves.add(new Move(1, 1, true, true, true)); //une case à droite + descend d'une case
+		moves.add(new Move(1, -1, true, true, true)); //une case à gauche + descend d'une case
+		moves.add(new Move(-1, -1, true, true, true)); //une case à gauche + monte d'une case
+		moves.add(new Move(-1, 1, true, true, true)); //une case à droite + monte d'une case
+		
+		return moves;
 	}
 
 	@Override

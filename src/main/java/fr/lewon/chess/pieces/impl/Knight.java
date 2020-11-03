@@ -17,8 +17,14 @@ public class Knight extends ChessPiece {
 	public List<Move> getPossibleMoves() {
 
 		List<Move> moves = new ArrayList<>(); 
-		moves.add(new Move(1, 1, false, true, true));
-		moves.add(new Move(1, -1, false, true, true));
+		moves.add(new Move(2, 1, false, true, true)); //descend de deux cases + une case à droite 
+		moves.add(new Move(2, -1, false, true, true)); //descend de deux cases + une case à gauche
+		moves.add(new Move(1, -2, false, true, true)); //descend d'une case + deux cases à gauche
+		moves.add(new Move(1, 2, false, true, true)); //descend d'une case + deux cases à droite
+		moves.add(new Move(-1, -2, false, true, true)); //monte d'une case + deux cases à droite
+		moves.add(new Move(-1, 2, false, true, true)); //monte d'une case + deux cases à gauche
+		moves.add(new Move(-2, 1, false, true, true)); //monte de deux cases + deux cases à droite
+		moves.add(new Move(-2, -1, false, true, true)); //monte de deux cases + deux cases à gauche
 
 		return moves;
 	}
